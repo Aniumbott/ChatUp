@@ -161,6 +161,7 @@ const HomeContainer = styled.div`
   color: black;
 
   main {
+    padding-left: 7rem;
     height: 100%;
     width: 100%;
     display: flex;
@@ -217,7 +218,7 @@ const HomeContainer = styled.div`
 
     .info-graphic {
       height: 80%;
-      width: 40%;
+      width: 50%;
       svg {
         height: 100%;
         width: 100%;
