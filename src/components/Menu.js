@@ -14,25 +14,23 @@ function Menu() {
       <main className="">
         {/* DETAILS */}
         <Details onClick={Toggle}>
-          <svg
-            width="60"
-            height="60"
-            viewBox="0 0 60 60"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M30 0C13.4325 0 0 13.4325 0 30C0 46.5675 13.4325 60 30 60C46.5675 60 60 46.5675 60 30C60 13.4325 46.5675 0 30 0ZM45 42.5H15V37.5H45V42.5ZM45 32.5H15V27.5H45V32.5ZM45 22.5H15V17.5H45V22.5Z"
-              fill="#FE9C26"
-            />
-          </svg>
+          <img src={logo} alt="" srcset="" />
         </Details>
 
         <div className="items">
           {/* HOME */}
           <Link to="/" className="itemContainer">
             <Sdivs>
-              <img src={logo} alt="" srcset="" />
+              <svg
+                fill="#000000"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="48px"
+                height="48px"
+              >
+                {" "}
+                <path d="M 12 2 A 1 1 0 0 0 11.289062 2.296875 L 1.203125 11.097656 A 0.5 0.5 0 0 0 1 11.5 A 0.5 0.5 0 0 0 1.5 12 L 4 12 L 4 20 C 4 20.552 4.448 21 5 21 L 9 21 C 9.552 21 10 20.552 10 20 L 10 14 L 14 14 L 14 20 C 14 20.552 14.448 21 15 21 L 19 21 C 19.552 21 20 20.552 20 20 L 20 12 L 22.5 12 A 0.5 0.5 0 0 0 23 11.5 A 0.5 0.5 0 0 0 22.796875 11.097656 L 12.716797 2.3027344 A 1 1 0 0 0 12.710938 2.296875 A 1 1 0 0 0 12 2 z" />
+              </svg>
             </Sdivs>
             <p>HOME</p>
           </Link>
@@ -92,6 +90,28 @@ function Menu() {
               </svg>
             </Sdivs>
             <p>REQUEST A SERVER</p>
+          </Link>
+
+          {/* CUSTOMIZE */}
+          <Link to="/customize" className="itemContainer">
+            <Sdivs>
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="palette"
+                class="svg-inline--fa fa-palette fa-w-16"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <path
+                  fill="currentColor"
+                  d="M204.3 5C104.9 24.4 24.8 104.3 5.2 203.4c-37 187 131.7 326.4 258.8 306.7 41.2-6.4 61.4-54.6 42.5-91.7-23.1-45.4 9.9-98.4 60.9-98.4h79.7c35.8 0 64.8-29.6 64.9-65.3C511.5 97.1 368.1-26.9 204.3 5zM96 320c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128-64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+                ></path>
+              </svg>
+            </Sdivs>
+            <p>CUSTOMIZE</p>
           </Link>
 
           {/* INFO */}
@@ -205,12 +225,12 @@ const ItemContainer = styled.div`
 const Details = styled.div`
   cursor: pointer;
   max-height: 3rem;
-  margin: 2rem auto 4rem auto;
+  margin: 2rem auto 2rem auto;
   display: flex;
   justify-content: center;
-  svg {
-    max-height: 3rem;
-    max-width: 3rem;
+  img {
+    height: 3rem;
+    width: 3rem;
     object-fit: cover;
   }
 `;
@@ -221,10 +241,12 @@ const Sdivs = styled.div`
   margin: 0.5rem 0.3rem;
   padding: 0.5rem;
   svg {
+    fill: #e1e1e1;
     height: 100%;
     width: 100%;
     object-fit: cover;
     path {
+      fill: #e1e1e1;
       transition: all 0.5s ease;
     }
     &:hover {
@@ -232,12 +254,6 @@ const Sdivs = styled.div`
         fill: white;
       }
     }
-  }
-
-  img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
   }
 `;
 

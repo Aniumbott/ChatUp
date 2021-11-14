@@ -13,14 +13,15 @@ import Reqas from "./components/Reqas";
 import Info from "./components/Info";
 import Feedback from "./components/Feedback";
 import SignIn from "./components/SignIn";
+import Customize from "./components/Customize";
 
 function App() {
   const [user] = useAuthState(auth);
   return (
     <>
+      <GlobalStyle />
       {user ? (
         <div className="App">
-          <GlobalStyle />
           <Menu />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -29,6 +30,7 @@ function App() {
             <Route path="/reqas" element={<Reqas />} />
             <Route path="/info" element={<Info />} />
             <Route path="/feedback" element={<Feedback />} />
+            <Route path="/customize" element={<Customize />} />
           </Routes>
         </div>
       ) : (
