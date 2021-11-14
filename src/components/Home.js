@@ -16,7 +16,7 @@ function Home() {
   }
 
   return (
-    <HomeContainer>
+    <HomeStyleComponent>
       <main>
         <div class="quote">
           <span>Have a</span>
@@ -149,12 +149,12 @@ function Home() {
           </svg>
         </div>
       </main>
-    </HomeContainer>
+    </HomeStyleComponent>
   );
 }
 
 // Styled Componets
-const HomeContainer = styled.div`
+const HomeStyleComponent = styled.div`
   height: 100vh;
   width: 100vw;
   padding-left: 4rem;
