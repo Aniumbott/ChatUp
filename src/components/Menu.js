@@ -2,11 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Menu() {
   function Toggle() {
     let e = document.querySelector("main");
     e.classList.toggle("expand");
+  }
+
+  function activeRoute(e) {
+    // console.log(e.target);
+    document.querySelectorAll(".items a").forEach((a) => {
+      a.style.background = "#000000";
+    });
+
+    e.target.style.background = "#fe9c26";
   }
 
   return (
@@ -19,7 +29,12 @@ function Menu() {
 
         <div className="items">
           {/* HOME */}
-          <Link to="/" className="itemContainer">
+          <Link
+            to="/"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="home"
+          >
             <Sdivs>
               <svg
                 fill="#000000"
@@ -28,7 +43,6 @@ function Menu() {
                 width="48px"
                 height="48px"
               >
-                {" "}
                 <path d="M 12 2 A 1 1 0 0 0 11.289062 2.296875 L 1.203125 11.097656 A 0.5 0.5 0 0 0 1 11.5 A 0.5 0.5 0 0 0 1.5 12 L 4 12 L 4 20 C 4 20.552 4.448 21 5 21 L 9 21 C 9.552 21 10 20.552 10 20 L 10 14 L 14 14 L 14 20 C 14 20.552 14.448 21 15 21 L 19 21 C 19.552 21 20 20.552 20 20 L 20 12 L 22.5 12 A 0.5 0.5 0 0 0 23 11.5 A 0.5 0.5 0 0 0 22.796875 11.097656 L 12.716797 2.3027344 A 1 1 0 0 0 12.710938 2.296875 A 1 1 0 0 0 12 2 z" />
               </svg>
             </Sdivs>
@@ -36,7 +50,12 @@ function Menu() {
           </Link>
 
           {/* USER */}
-          <Link to="/user" className="itemContainer">
+          <Link
+            to="/user"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="user"
+          >
             <Sdivs>
               <svg
                 width="60"
@@ -55,7 +74,12 @@ function Menu() {
           </Link>
 
           {/* SERVERS */}
-          <Link to="/servers" className="itemContainer">
+          <Link
+            to="/servers"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="servers"
+          >
             <Sdivs>
               <svg
                 width="48"
@@ -74,7 +98,12 @@ function Menu() {
           </Link>
 
           {/* REQAS */}
-          <Link to="/reqas" className="itemContainer">
+          <Link
+            to="/reqas"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="reqas"
+          >
             <Sdivs>
               <svg
                 width="60"
@@ -93,7 +122,12 @@ function Menu() {
           </Link>
 
           {/* CUSTOMIZE */}
-          <Link to="/customize" className="itemContainer">
+          <Link
+            to="/customize"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="customise"
+          >
             <Sdivs>
               <svg
                 aria-hidden="true"
@@ -115,7 +149,12 @@ function Menu() {
           </Link>
 
           {/* INFO */}
-          <Link to="/info" className="itemContainer">
+          <Link
+            to="/info"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="info"
+          >
             <Sdivs>
               <svg
                 width="387"
@@ -134,7 +173,12 @@ function Menu() {
           </Link>
 
           {/* FEEDBACK */}
-          <Link to="/feedback" className="itemContainer">
+          <Link
+            to="/feedback"
+            className="itemContainer"
+            onClick={activeRoute}
+            id="feedback"
+          >
             <Sdivs>
               <svg
                 width="60"
@@ -181,6 +225,9 @@ const MenuItems = styled.div`
     .items {
       position: absolute;
       left: 0;
+      #home {
+        background: #fe9c26;
+      }
     }
 
     .itemContainer {
@@ -192,32 +239,13 @@ const MenuItems = styled.div`
       justify-content: flex-start;
       align-items: center;
       p {
+        pointer-events: none;
         padding: 0rem 0.5rem;
         font-size: 0.8rem;
         text-decoration: none;
         color: white;
         font-weight: 600;
-        &:hover {
-          color: #fe9c26;
-        }
       }
-    }
-  }
-`;
-
-const ItemContainer = styled.div`
-  width: 14rem;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  p {
-    padding: 0rem 0.5rem;
-    font-size: 0.8rem;
-    text-decoration: none;
-    color: white;
-    font-weight: 600;
-    &:hover {
-      color: #fe9c26;
     }
   }
 `;
@@ -236,23 +264,18 @@ const Details = styled.div`
 `;
 
 const Sdivs = styled.div`
+  pointer-events: none;
   max-height: 3rem;
   max-width: 3rem;
   margin: 0.5rem 0.3rem;
   padding: 0.5rem;
   svg {
-    fill: #e1e1e1;
     height: 100%;
     width: 100%;
     object-fit: cover;
     path {
-      fill: #e1e1e1;
+      fill: #ffffff;
       transition: all 0.5s ease;
-    }
-    &:hover {
-      path {
-        fill: white;
-      }
     }
   }
 `;
