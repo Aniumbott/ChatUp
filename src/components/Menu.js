@@ -206,7 +206,7 @@ const MenuItems = styled.div`
   width: auto;
   z-index: 10;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   overflow: hidden;

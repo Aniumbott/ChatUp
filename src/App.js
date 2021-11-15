@@ -14,9 +14,11 @@ import Info from "./components/Info";
 import Feedback from "./components/Feedback";
 import SignIn from "./components/SignIn";
 import Customize from "./components/Customize";
+import styled from "styled-components";
 
 function App() {
   const [user] = useAuthState(auth);
+
   return (
     <>
       <GlobalStyle />
@@ -39,4 +41,5 @@ function App() {
     </>
   );
 }
+
 export default App;

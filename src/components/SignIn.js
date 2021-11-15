@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import bg from "../images/sign-in-bg.png";
+import bg from "../images/sign-in-bg-4.jpg";
 import logo from "../images/logo.png";
 import firebase from "firebase";
 import { auth } from "../firebase";
@@ -51,7 +51,15 @@ function SignIn() {
             <p>Sign-In with Google</p>
           </div>
         </div>
-        <div className="details"></div>
+        <div className="details">
+          <div className="details-container">
+            <p>Log-In to,</p>
+            <h1>ChatUp</h1>
+          </div>
+          <div className="circle">
+            <h2>A platform where you can put your opinions.</h2>
+          </div>
+        </div>
       </SignInContainer>
     </SignInStyledComponent>
   );
@@ -86,7 +94,7 @@ const SignInContainer = styled.div`
   border-radius: 20px;
   overflow: hidden;
   display: flex;
-  box-shadow: 5px 5px 20px 3px #111111af;
+  box-shadow: 5px 5px 10px 5px #00000055;
   .container {
     height: 100%;
     width: 45%;
@@ -115,6 +123,7 @@ const SignInContainer = styled.div`
       align-items: center;
       border-radius: 5px;
       overflow: hidden;
+      box-shadow: 0px 0px 10px 3px #33333355;
       transition: all 0.3s ease;
       .g-logo {
         display: flex;
@@ -143,6 +152,40 @@ const SignInContainer = styled.div`
     height: 100%;
     width: 70%;
     background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    .details-container {
+      padding-top: 5rem;
+      padding-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      p {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      h1 {
+        color: #ffd600;
+        font-size: 5rem;
+      }
+    }
+    .circle {
+      position: absolute;
+      bottom: 0;
+      background: #2e2e2e;
+      height: 20rem;
+      width: 100%;
+      border-radius: 0 30px;
+      transform: translateY(50%);
+      box-shadow: -3px -3px 0px 10px #ffd600;
+      h2 {
+        margin: 0 auto;
+        padding-top: 3rem;
+        width: 80%;
+        color: #ffd600;
+        font-size: 1.1rem;
+        font-weight: 400;
+      }
+    }
   }
 `;
 

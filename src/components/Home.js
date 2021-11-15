@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import bg from "../images/sign-in-bg-7.jpg";
 
 function Home() {
   function Quote() {
@@ -18,6 +19,7 @@ function Home() {
   return (
     <HomeStyleComponent>
       <main>
+        <img src={bg} alt="" srcset="" id="home-bg" />
         <div class="quote">
           <span>Have a</span>
           <span>Great</span>
@@ -167,13 +169,24 @@ const HomeStyleComponent = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+    overflow: hidden;
+    #home-bg {
+      pointer-events: none;
+      z-index: -1;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      object-fit: cover;
+    }
 
     .quote {
       @font-face {
         font-family: mon;
         src: url("/fonts/Montserrat.ttf");
       }
-
+      padding-top: 2rem;
       font-family: mon;
       font-size: 5rem;
       font-weight: 600;
@@ -182,7 +195,7 @@ const HomeStyleComponent = styled.div`
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
+      justify-content: flex-start;
 
       @keyframes explosion {
         0% {
