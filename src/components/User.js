@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
+import bg from "../images/sign-in-bg-3.jpg";
 
 function User({ user, setUser }) {
   function logOut() {
@@ -51,6 +52,7 @@ function User({ user, setUser }) {
 
   return (
     <UserStyleComponent>
+      <img src={bg} alt="" id="user-bg" />
       <div className="user-details">
         <div className="profilepic">
           <img src={user.profilepic} alt="" srcset="" />
@@ -176,6 +178,16 @@ const UserStyleComponent = styled.div`
   width: 100vw;
   padding-left: 4rem;
   color: black;
+  #user-bg {
+    pointer-events: none;
+    z-index: -1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    object-fit: cover;
+  }
   .user-details {
     display: flex;
     align-items: center;
