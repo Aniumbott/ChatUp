@@ -16,6 +16,13 @@ const GlobalStyle = createGlobalStyle`
     body{
         background: "ffffff";
         font-family: saira;
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        input:focus {
+	outline: none;
+}
     }
 `;
 

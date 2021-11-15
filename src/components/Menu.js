@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import logo from "../images/logo.png";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
 function Menu() {
   function Toggle() {

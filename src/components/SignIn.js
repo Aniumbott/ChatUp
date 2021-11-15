@@ -4,6 +4,7 @@ import bg from "../images/sign-in-bg-4.jpg";
 import logo from "../images/logo.png";
 import firebase from "firebase";
 import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 
 function SignIn() {
   // Sign-In function
@@ -20,7 +21,7 @@ function SignIn() {
           <div className="logo-container">
             <img src={logo} alt="" srcset="" />
           </div>
-          <div className="g-sign-in" onClick={signInWithGoogle}>
+          <Link to="/" onClick={signInWithGoogle} className="g-sign-in">
             <div className="g-logo">
               <svg
                 viewBox="0 0 24 24"
@@ -49,7 +50,7 @@ function SignIn() {
               </svg>
             </div>
             <p>Sign-In with Google</p>
-          </div>
+          </Link>
         </div>
         <div className="details">
           <div className="details-container">

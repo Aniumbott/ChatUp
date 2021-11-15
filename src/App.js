@@ -1,6 +1,5 @@
-// GlobalStyle
-import GlobalStyle from "./GlobalStyle";
 // Additionals
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 // Components
@@ -17,28 +16,26 @@ import Customize from "./components/Customize";
 import styled from "styled-components";
 
 function App() {
-  const [user] = useAuthState(auth);
+  const [isloged] = useAuthState(auth);
+  const [user, setUser] = useState({
+    username: auth.currentUser.displayName,
+    profilepic: auth.currentUser.photoURL,
+    email: auth.currentUser.email,
+  });
 
   return (
-    <>
-      <GlobalStyle />
-      {user ? (
-        <div className="App">
-          <Menu />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/servers" element={<Servers />} />
-            <Route path="/reqas" element={<Reqas />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="/feedback" element={<Feedback />} />
-            <Route path="/customize" element={<Customize />} />
-          </Routes>
-        </div>
-      ) : (
-        <SignIn />
-      )}
-    </>
+    <div className="App">
+      <Menu />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/user" element={<User user={user} setUser={setUser} />} />
+        <Route path="/servers" element={<Servers />} />
+        <Route path="/reqas" element={<Reqas />} />
+        <Route path="/info" element={<Info />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/customize" element={<Customize />} />
+      </Routes>
+    </div>
   );
 }
 

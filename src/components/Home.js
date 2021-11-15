@@ -1,4 +1,5 @@
 import React from "react";
+import { auth } from "../firebase";
 import styled from "styled-components";
 import bg from "../images/sign-in-bg-7.jpg";
 
