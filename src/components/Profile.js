@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { auth } from "../firebase";
 import bg from "../images/4.jpg";
 
-function User({ user, setUser }) {
+function Profile({ user, setUser }) {
   function logOut() {
     auth.signOut();
   }
@@ -329,4 +329,4 @@ const UserStyleComponent = styled.div`
     }
   }
 `;
-export default User;
+export default Profile;

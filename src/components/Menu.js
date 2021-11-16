@@ -54,8 +54,8 @@ function Menu() {
             <p>HOME</p>
           </Link>
 
-          {/* USER */}
-          <Link to="/user" className="itemContainer" id="user">
+          {/* POFILE */}
+          <Link to="/profile" className="itemContainer" id="profile">
             <Sdivs>
               <svg
                 width="60"
@@ -70,7 +70,7 @@ function Menu() {
                 />
               </svg>
             </Sdivs>
-            <p>USER</p>
+            <p>PROFILE</p>
           </Link>
 
           {/* SERVERS */}
