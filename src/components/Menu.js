@@ -1,21 +1,32 @@
-import React from "react";
+// Modules
+import React, { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+// Components
 import styled from "styled-components";
 import logo from "../images/logo.png";
-import { Link } from "react-router-dom";
 
+// Main Function
 function Menu() {
-  function Toggle() {
-    let e = document.querySelector("main");
-    e.classList.toggle("expand");
-  }
+  // Additional components
+  const location = useLocation();
 
-  function activeRoute(e) {
-    // console.log(e.target);
+  // set active route
+  useEffect(() => {
+    let path = location.pathname;
+    if (location.pathname == "/") path = "/home";
+    path = "#" + path.substring(1);
+
     document.querySelectorAll(".items a").forEach((a) => {
       a.style.background = "#000000";
     });
 
-    e.target.style.background = "#fe9c26";
+    document.querySelector(path).style.background = "#fe9c26";
+  }, [location.pathname]);
+  // Toggle the menue
+
+  function Toggle() {
+    let e = document.querySelector("main");
+    e.classList.toggle("expand");
   }
 
   return (
@@ -28,12 +39,7 @@ function Menu() {
 
         <div className="items">
           {/* HOME */}
-          <Link
-            to="/"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="home"
-          >
+          <Link to="/" className="itemContainer" id="home">
             <Sdivs>
               <svg
                 fill="#000000"
@@ -49,12 +55,7 @@ function Menu() {
           </Link>
 
           {/* USER */}
-          <Link
-            to="/user"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="user"
-          >
+          <Link to="/user" className="itemContainer" id="user">
             <Sdivs>
               <svg
                 width="60"
@@ -73,12 +74,7 @@ function Menu() {
           </Link>
 
           {/* SERVERS */}
-          <Link
-            to="/servers"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="servers"
-          >
+          <Link to="/servers" className="itemContainer" id="servers">
             <Sdivs>
               <svg
                 width="48"
@@ -97,12 +93,7 @@ function Menu() {
           </Link>
 
           {/* REQAS */}
-          <Link
-            to="/reqas"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="reqas"
-          >
+          <Link to="/reqas" className="itemContainer" id="reqas">
             <Sdivs>
               <svg
                 width="60"
@@ -121,12 +112,7 @@ function Menu() {
           </Link>
 
           {/* CUSTOMIZE */}
-          <Link
-            to="/customize"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="customise"
-          >
+          <Link to="/customize" className="itemContainer" id="customize">
             <Sdivs>
               <svg
                 aria-hidden="true"
@@ -148,12 +134,7 @@ function Menu() {
           </Link>
 
           {/* INFO */}
-          <Link
-            to="/info"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="info"
-          >
+          <Link to="/info" className="itemContainer" id="info">
             <Sdivs>
               <svg
                 width="387"
@@ -172,12 +153,7 @@ function Menu() {
           </Link>
 
           {/* FEEDBACK */}
-          <Link
-            to="/feedback"
-            className="itemContainer"
-            onClick={activeRoute}
-            id="feedback"
-          >
+          <Link to="/feedback" className="itemContainer" id="feedback">
             <Sdivs>
               <svg
                 width="60"
@@ -199,6 +175,8 @@ function Menu() {
     </MenuItems>
   );
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 // Styled Components
 const MenuItems = styled.div`
@@ -256,6 +234,7 @@ const Details = styled.div`
   display: flex;
   justify-content: center;
   img {
+    pointer-events: none;
     height: 3rem;
     width: 3rem;
     object-fit: cover;

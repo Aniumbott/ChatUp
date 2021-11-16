@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import bg from "../images/sign-in-bg-4.jpg";
+import bg from "../images/5.jpg";
 import logo from "../images/logo.png";
 import firebase from "firebase";
 import { auth } from "../firebase";
 import { Link } from "react-router-dom";
 
+// Main function
 function SignIn() {
   // Sign-In function
   function signInWithGoogle() {

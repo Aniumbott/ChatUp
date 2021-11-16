@@ -1,22 +1,11 @@
+// Modules
 import React from "react";
-import { auth } from "../firebase";
 import styled from "styled-components";
-import bg from "../images/sign-in-bg-7.jpg";
+// Components
+import bg from "../images/7.jpg";
 
+// Main Function
 function Home() {
-  function Quote() {
-    const quotes = ["Chat", "Discussion", "Debate", "Talk", "Time"];
-    for (let i = 0; i < 10; i++) {
-      setTimeout(function () {
-        document.querySelector(".txt").innerText = quotes[i % quotes.length];
-        if (i > 10) {
-          i = 0;
-        }
-      }, 2000 * i);
-      console.log("yo");
-    }
-  }
-
   return (
     <HomeStyleComponent>
       <main>
@@ -155,6 +144,8 @@ function Home() {
     </HomeStyleComponent>
   );
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 // Styled Componets
 const HomeStyleComponent = styled.div`

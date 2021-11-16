@@ -1,53 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 import { auth } from "../firebase";
-import bg from "../images/sign-in-bg-3.jpg";
+import bg from "../images/4.jpg";
 
 function User({ user, setUser }) {
   function logOut() {
     auth.signOut();
   }
 
-  function changeUsername() {
-    let e = document.querySelector("#username");
+  // Toggle appear of inputbox
+  function change(q) {
+    if (q == "google-u") {
+      q = "username";
+    } else if (q == "google-p") {
+      q = "profilepic";
+    }
+    let e = document.querySelector("#" + q);
     e.classList.toggle("appear");
   }
 
-  function setUsername() {
+  // Set user details
+  function set(q) {
     let u = user;
-    u.username = document.querySelector("#username input").value;
+    if (q == "username") {
+      u.username = document.querySelector("#username input").value;
+    } else if (q == "profilepic") {
+      u.profilepic = document.querySelector("#profilepic input").value;
+    } else if (q == "google-u") {
+      u.username = auth.currentUser.displayName;
+    } else if (q == "google-p") {
+      u.profilepic = auth.currentUser.photoURL;
+    }
     setUser(u);
     document.querySelector(".username p").innerText = u.username;
-    changeUsername();
-  }
-
-  function setGUsername() {
-    let u = user;
-    u.username = auth.currentUser.displayName;
-    setUser(u);
-    document.querySelector(".username p").innerText = u.username;
-    changeUsername();
-  }
-
-  function changeProfilepic() {
-    let e = document.querySelector("#profilepic");
-    e.classList.toggle("appear");
-  }
-
-  function setProfilepic() {
-    let u = user;
-    u.profilepic = document.querySelector("#profilepic input").value;
-    setUser(u);
     document.querySelector(".profilepic img").src = u.profilepic;
-    changeProfilepic();
-  }
-
-  function setGProfilepic() {
-    let u = user;
-    u.profilepic = auth.currentUser.photoURL;
-    setUser(u);
-    document.querySelector(".profilepic img").src = u.profilepic;
-    changeProfilepic();
+    change(q);
   }
 
   return (
@@ -55,8 +42,12 @@ function User({ user, setUser }) {
       <img src={bg} alt="" id="user-bg" />
       <div className="user-details">
         <div className="profilepic">
-          <img src={user.profilepic} alt="" srcset="" />
-          <div className="edit-profilepic" onClick={changeProfilepic}>
+          <p>
+            No Image <br />
+            Found.
+          </p>
+          <img src={user.profilepic} alt="" srcSet="" />
+          <div className="edit-profilepic" onClick={() => change("profilepic")}>
             <svg
               aria-hidden="true"
               focusable="false"
@@ -76,7 +67,7 @@ function User({ user, setUser }) {
         </div>
         <div className="username">
           <p>{user.username}</p>
-          <div className="edit-username" onClick={changeUsername}>
+          <div className="edit-username" onClick={() => change("username")}>
             <svg
               aria-hidden="true"
               focusable="false"
@@ -95,45 +86,10 @@ function User({ user, setUser }) {
           </div>
         </div>
       </div>
-      <div className="edit-container" id="username">
-        <div className="popup-textbox">
-          <input type="text" defaultValue="Enter new Username" />
-          <button id="check" onClick={setGUsername}>
-            <svg
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
-                <path
-                  fill="#4285F4"
-                  d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
-                />
-              </g>
-            </svg>
-          </button>
-          <button id="check" onClick={setUsername}>
-            &#10003;
-          </button>
-        </div>
-      </div>
       <div className="edit-container" id="profilepic">
         <div className="popup-textbox">
           <input type="text" defaultValue="Paste the source" />
-          <button id="check" onClick={setGProfilepic}>
+          <button id="check" onClick={() => set("google-p")}>
             <svg
               viewBox="0 0 24 24"
               width="24"
@@ -160,17 +116,55 @@ function User({ user, setUser }) {
               </g>
             </svg>
           </button>
-          <button id="check" onClick={setProfilepic}>
+          <button id="check" onClick={() => set("profilepic")}>
             &#10003;
           </button>
         </div>
       </div>
+      <div className="edit-container" id="username">
+        <div className="popup-textbox">
+          <input type="text" defaultValue="Enter new Username" />
+          <button id="check" onClick={() => set("google-u")}>
+            <svg
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                <path
+                  fill="#4285F4"
+                  d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"
+                />
+              </g>
+            </svg>
+          </button>
+          <button id="check" onClick={() => set("username")}>
+            &#10003;
+          </button>
+        </div>
+      </div>
+
       <button onClick={logOut} id="log-out">
         LOG OUT
       </button>
     </UserStyleComponent>
   );
 }
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
 
 // Styled Componets
 const UserStyleComponent = styled.div`
@@ -204,7 +198,17 @@ const UserStyleComponent = styled.div`
       border: solid 5px #fe9c26;
       position: relative;
       display: flex;
+      p {
+        font-size: 1.05rem;
+        font-weight: 600;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+      }
       .edit-profilepic {
+        z-index: 2;
         opacity: 0;
         height: 100%;
         width: 100%;
@@ -227,6 +231,7 @@ const UserStyleComponent = styled.div`
         }
       }
       img {
+        z-index: 1;
         height: 10rem;
       }
     }

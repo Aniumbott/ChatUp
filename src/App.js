@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-// Components
 import { auth } from "./firebase";
+// Components
 import Menu from "./components/Menu";
 import Home from "./components/Home";
 import User from "./components/User";
@@ -11,12 +11,11 @@ import Servers from "./components/Servers";
 import Reqas from "./components/Reqas";
 import Info from "./components/Info";
 import Feedback from "./components/Feedback";
-import SignIn from "./components/SignIn";
 import Customize from "./components/Customize";
-import styled from "styled-components";
 
+// Main function
 function App() {
-  const [isloged] = useAuthState(auth);
+  // Additional components
   const [user, setUser] = useState({
     username: auth.currentUser.displayName,
     profilepic: auth.currentUser.photoURL,
