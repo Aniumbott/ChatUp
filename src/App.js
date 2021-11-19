@@ -22,6 +22,8 @@ function App() {
     email: auth.currentUser.email,
   });
 
+  console.log(process.env);
+
   return (
     <div className="App">
       <Menu />
