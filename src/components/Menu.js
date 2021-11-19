@@ -4,22 +4,29 @@ import { Link, useLocation } from "react-router-dom";
 // Components
 import styled from "styled-components";
 import logo from "../images/logo.png";
+import Loading from "./Loading";
 
 // Main Function
 function Menu() {
   // Additional components
   const location = useLocation();
 
-  // set active route
+  // onRoutechange
   useEffect(() => {
     let path = location.pathname;
     if (location.pathname == "/") path = "/home";
     path = "#" + path.substring(1);
 
+    // // Set loading page
+    // document.querySelector(".unloaded").classList.add("loaded");
+    // setTimeout(() => {
+    //   document.querySelector(".unloaded").classList.remove("loaded");
+    // }, 200);
+
+    // Set active route
     document.querySelectorAll(".items a").forEach((a) => {
       a.style.background = "#000000";
     });
-
     document.querySelector(path).style.background = "#fe9c26";
   }, [location.pathname]);
   // Toggle the menue
@@ -172,6 +179,7 @@ function Menu() {
           </Link>
         </div>
       </main>
+      {/* <Loading /> */}
     </MenuItems>
   );
 }
@@ -181,7 +189,7 @@ function Menu() {
 // Styled Components
 const MenuItems = styled.div`
   width: auto;
-  z-index: 10;
+  z-index: 20;
   height: 100vh;
   position: fixed;
   top: 0;

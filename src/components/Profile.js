@@ -31,10 +31,14 @@ function Profile({ user, setUser }) {
     } else if (q == "google-p") {
       u.profilepic = auth.currentUser.photoURL;
     }
-    setUser(u);
-    document.querySelector(".username p").innerText = u.username;
-    document.querySelector(".profilepic img").src = u.profilepic;
-    change(q);
+    if (u.username == "" || u.profilepic == "") {
+      alert("Value cannot be empty.");
+    } else {
+      setUser(u);
+      document.querySelector(".username p").innerText = u.username;
+      document.querySelector(".profilepic img").src = u.profilepic;
+      change(q);
+    }
   }
 
   return (
