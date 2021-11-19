@@ -1,7 +1,6 @@
 // Additionals
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 // Components
 import Menu from "./components/Menu";
@@ -21,8 +20,6 @@ function App() {
     profilepic: auth.currentUser.photoURL,
     email: auth.currentUser.email,
   });
-
-  console.log(process.env);
 
   return (
     <div className="App">

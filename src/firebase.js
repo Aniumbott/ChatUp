@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey: process.env.APIKEY,
-  authDomain: "chatup-42069.firebaseapp.com",
-  projectId: "chatup-42069",
-  storageBucket: "chatup-42069.appspot.com",
-  messagingSenderId: "499430159944",
-  appId: "1:499430159944:web:56a1cecdfb7de42a51ca7d",
-  measurementId: "G-7ZHV60VCQ7",
+  apiKey: process.env.React_App_apikey,
+  authDomain: process.env.React_App_authDomain,
+  projectId: process.env.React_App_projectId,
+  storageBucket: process.env.React_App_storageBucket,
+  messagingSenderId: process.env.React_App_messagingSenderId,
+  appId: process.env.React_App_appId,
+  measurementId: process.env.React_App_measurementId,
 });
 
 const db = firebaseApp.firestore();
