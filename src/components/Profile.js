@@ -1,11 +1,12 @@
 import React from "react";
+import { signOut } from "firebase/auth";
 import styled from "styled-components";
 import { auth } from "../firebase";
 import bg from "../images/4.jpg";
 
 function Profile({ user, setUser }) {
   function logOut() {
-    auth.signOut();
+    signOut(auth);
   }
 
   // Toggle appear of inputbox

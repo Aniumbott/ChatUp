@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import bg from "../images/5.jpg";
 import logo from "../images/logo.png";
-import firebase from "firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link } from "react-router-dom";
 
@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 function SignIn() {
   // Sign-In function
   function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider);
   }
 
   return (
