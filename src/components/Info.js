@@ -16,7 +16,7 @@ function Info() {
         <lh>Features :</lh>
         <li>Simple, Fast and easy to use.</li>
         <li>Modern UI.</li>
-        <li>Customisable theme.</li>
+        <li>Customisable theme. (as everyone has own taste.)</li>
       </ul>
     </InfoStyleComponent>
   );

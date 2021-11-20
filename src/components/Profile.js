@@ -2,7 +2,6 @@ import React from "react";
 import { signOut } from "firebase/auth";
 import styled from "styled-components";
 import { auth } from "../firebase";
-import bg from "../images/4.jpg";
 
 function Profile({ user, setUser }) {
   function logOut() {
@@ -44,7 +43,8 @@ function Profile({ user, setUser }) {
 
   return (
     <UserStyleComponent>
-      <img src={bg} alt="" id="user-bg" />
+      <img src={user.customize.wallpaper} alt="" id="user-bg" />
+      <h1>PROFILE :</h1>
       <div className="user-details">
         <div className="profilepic">
           <p>
@@ -173,37 +173,33 @@ function Profile({ user, setUser }) {
 
 // Styled Componets
 const UserStyleComponent = styled.div`
-  height: 100vh;
-  width: 100vw;
-  padding-left: 4rem;
+  height: 100%;
+  width: 100%;
   color: black;
-  #user-bg {
-    pointer-events: none;
-    z-index: -1;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    object-fit: cover;
+  h1 {
+    font-size: 2rem;
+    margin: 1rem 2rem;
+    color: ${(props) => props.theme.color_1};
   }
   .user-details {
     display: flex;
     align-items: center;
     .profilepic {
-      margin: 3rem;
+      margin: 1rem 3rem;
+      margin-left: 1.5rem;
       border-radius: 50%;
       height: 10rem;
       width: 10rem;
-      background: #fe9c26;
+      background: ${(props) => props.theme.color_2};
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      border: solid 5px #fe9c26;
+      border: solid 5px ${(props) => props.theme.color_2};
       position: relative;
       display: flex;
       p {
+        color: white;
         font-size: 1.05rem;
         font-weight: 600;
         text-align: center;
@@ -241,6 +237,7 @@ const UserStyleComponent = styled.div`
       }
     }
     .username {
+      color: ${(props) => props.theme.color_1};
       font-size: 2rem;
       display: flex;
       align-items: center;
@@ -251,7 +248,7 @@ const UserStyleComponent = styled.div`
         svg {
           height: 100%;
           path {
-            fill: #000000;
+            fill: ${(props) => props.theme.color_1};
           }
         }
       }
@@ -281,7 +278,7 @@ const UserStyleComponent = styled.div`
       display: none;
       height: 3rem;
       width: 30rem;
-      background: #fe9c26;
+      background: ${(props) => props.theme.color_2};
       border-radius: 10px;
       margin: 0.5rem auto;
       overflow: hidden;
@@ -289,20 +286,20 @@ const UserStyleComponent = styled.div`
       justify-content: center;
       align-items: center;
       input {
+        color: white;
         border: none;
         height: 95%;
         padding: 0.5rem 1rem;
         width: 90%;
         font-size: 1.1rem;
         background: transparent;
-        color: black;
       }
       #check {
         cursor: pointer;
         width: 10%;
         height: 100%;
         border: none;
-        background: black;
+        background: ${(props) => props.theme.color_1};
         color: white;
         font-size: 1rem;
         font-weight: 600;
@@ -323,13 +320,13 @@ const UserStyleComponent = styled.div`
     width: 7rem;
     border: none;
     border-radius: 10px;
-    margin: 0 4.5rem;
+    margin: 2rem 3rem;
     font-size: 0.8rem;
     background: #e1e1e1;
-    color: #000000;
+    color: ${(props) => props.theme.color_1};
     transition: all 0.3s ease;
     &:hover {
-      background: #fe9c26;
+      background: ${(props) => props.theme.color_2};
       color: white;
     }
   }

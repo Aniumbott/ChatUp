@@ -4,10 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 // Components
 import styled from "styled-components";
 import logo from "../images/logo.png";
-import Loading from "./Loading";
 
 // Main Function
-function Menu() {
+function Menu({ user }) {
   // Additional components
   const location = useLocation();
 
@@ -17,17 +16,11 @@ function Menu() {
     if (location.pathname == "/") path = "/home";
     path = "#" + path.substring(1);
 
-    // // Set loading page
-    // document.querySelector(".unloaded").classList.add("loaded");
-    // setTimeout(() => {
-    //   document.querySelector(".unloaded").classList.remove("loaded");
-    // }, 200);
-
     // Set active route
     document.querySelectorAll(".items a").forEach((a) => {
-      a.style.background = "#000000";
+      a.style.background = user.customize.color_1;
     });
-    document.querySelector(path).style.background = "#fe9c26";
+    document.querySelector(path).style.background = user.customize.color_2;
   }, [location.pathname]);
   // Toggle the menue
 
@@ -203,7 +196,7 @@ const MenuItems = styled.div`
     overflow: hidden;
     height: 100vh;
     width: 4rem;
-    background: #000000;
+    background: ${(props) => props.theme.color_1};
     display: block;
     transition: all 0.3s ease;
 
@@ -211,7 +204,7 @@ const MenuItems = styled.div`
       position: absolute;
       left: 0;
       #home {
-        background: #fe9c26;
+        background: ${(props) => props.theme.color_2};
       }
     }
 
