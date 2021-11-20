@@ -22,8 +22,8 @@ function App() {
     email: auth.currentUser.email,
     customize: {
       wallpaper: bg,
-      color_1: "#222222",
-      color_2: "#aa00aa",
+      color_1: "#000000",
+      color_2: "#FE9C26",
     },
   });
 

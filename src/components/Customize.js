@@ -152,6 +152,7 @@ const CustomizeStyledComponent = styled.div`
           color: white;
         }
       }
+    }
   }
 `;
 export default Customize;
