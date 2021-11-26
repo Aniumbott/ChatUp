@@ -1,5 +1,5 @@
 // Additionals
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { ThemeProvider } from "styled-components";
@@ -11,40 +11,39 @@ import Servers from "./components/Servers";
 import Reqas from "./components/Reqas";
 import Info from "./components/Info";
 import Feedback from "./components/Feedback";
-import Customize from "./components/Customize";
+import SetUser from "./components/SetUser";
 import bg from "./images/4.jpg";
+
 // Main function
 function App() {
-  // Additional components
+  // console.log(auth.currentUser);
   const [user, setUser] = useState({
     username: auth.currentUser.displayName,
     profilepic: auth.currentUser.photoURL,
     email: auth.currentUser.email,
     customize: {
       wallpaper: bg,
-      color_1: "#222222",
-      color_2: "#aa00aa",
-    },
-  });
-
-  const [defaultUser, setDefaultUser] = useState({
-    username: auth.currentUser.displayName,
-    profilepic: auth.currentUser.photoURL,
-    email: auth.currentUser.email,
-    customize: {
-      wallpaper: bg,
       color_1: "#000000",
-      color_2: "FE9C26",
+      color_2: "#fe9c26",
     },
+    id: auth.currentUser.uid,
   });
 
-  const theme = {
+  const [theme, setTheme] = useState({
     color_1: user.customize.color_1,
     color_2: user.customize.color_2,
-  };
+  });
+
+  useEffect(() => {
+    setTheme({
+      color_1: user.customize.color_1,
+      color_2: user.customize.color_2,
+    });
+  }, [user]);
 
   return (
     <div className="App">
+      <SetUser setUser={setUser} user={user} setTheme={setTheme} />
       <ThemeProvider theme={theme}>
         <Menu user={user} />
         <div className="main-container">
@@ -52,14 +51,17 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route
               path="/profile"
-              element={<Profile user={user} setUser={setUser} />}
+              element={
+                <Profile
+                  user={user}
+                  setUser={setUser}
+                  theme={theme}
+                  setTheme={setTheme}
+                />
+              }
             />
             <Route path="/servers" element={<Servers />} />
             <Route path="/reqas" element={<Reqas />} />
-            <Route
-              path="/customize"
-              element={<Customize user={user} setUser={setUser} />}
-            />
             <Route path="/info" element={<Info />} />
             <Route path="/feedback" element={<Feedback />} />
           </Routes>
