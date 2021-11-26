@@ -5,6 +5,14 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../images/logo.png";
 
+// Extra functions
+
+// Toggle the menue
+function Toggle() {
+  let e = document.querySelector("main");
+  e.classList.toggle("expand");
+}
+
 // Main Function
 function Menu({ user }) {
   // Additional components
@@ -22,12 +30,6 @@ function Menu({ user }) {
     });
     document.querySelector(path).style.background = user.customize.color_2;
   }, [location.pathname, user]);
-  // Toggle the menue
-
-  function Toggle() {
-    let e = document.querySelector("main");
-    e.classList.toggle("expand");
-  }
 
   return (
     <MenuItems className="none">

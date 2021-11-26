@@ -1,8 +1,10 @@
+// Additionals
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, getDocs, doc, setDoc } from "@firebase/firestore";
 
-function SetUser({ setUser, user, setTheme }) {
+// Main function
+function SetUser({ setUser, user }) {
   const [users, setUsers] = useState([]);
   const UserCollectionRef = collection(db, "Users");
   let oldUser = false;

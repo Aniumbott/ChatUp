@@ -5,21 +5,50 @@ import { auth } from "../firebase";
 import bg from "../images/4.jpg";
 import { db } from "../firebase";
 import { doc, setDoc } from "@firebase/firestore";
+import logo from "../images/logo.png";
 
-function Profile({ user, setUser, theme, setTheme }) {
+// Additional functions
+// Log-Out
+function logOut() {
+  signOut(auth);
+}
+
+// rgb to hex
+function rgbToHex(q) {
+  let a = q.split("(")[1].split(")")[0];
+  a = a.split(", ");
+  let b = a.map(function (x) {
+    x = parseInt(x).toString(16);
+    return x.length == 1 ? "0" + x : x;
+  });
+  return "#" + b.join("");
+}
+
+// avoid White
+function avoidWhite(r) {
+  let a = r.split("(")[1].split(")")[0];
+  a = a.split(", ");
+  if (parseInt(a[0]) >= 220 && parseInt(a[1]) >= 200 && parseInt(a[2]) >= 200) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
+
+// Main function
+function Profile({ user, setUser }) {
+  //User instance
+  let u = user;
+
+  // Update the value of the colors inputs
   useEffect(() => {
     document.querySelector("#color_1").value =
       user.customize.color_1.substring(1);
     document.querySelector("#color_2").value =
       user.customize.color_2.substring(1);
   }, [user]);
-  // Log-Out
-  function logOut() {
-    signOut(auth);
-  }
-
-  //User instance
-  let u = user;
 
   // Toggle appear of inputbox
   function change(q) {
@@ -70,32 +99,6 @@ function Profile({ user, setUser, theme, setTheme }) {
 
   // onSave
   function onSave() {
-    // avoid White
-    function avoidWhite(r) {
-      let a = r.split("(")[1].split(")")[0];
-      a = a.split(", ");
-      if (
-        parseInt(a[0]) >= 220 &&
-        parseInt(a[1]) >= 200 &&
-        parseInt(a[2]) >= 200
-      ) {
-        return false;
-      } else {
-        return true;
-      }
-    }
-
-    // rgb to hex
-    function rgbToHex(q) {
-      let a = q.split("(")[1].split(")")[0];
-      a = a.split(", ");
-      let b = a.map(function (x) {
-        x = parseInt(x).toString(16);
-        return x.length == 1 ? "0" + x : x;
-      });
-      return "#" + b.join("");
-    }
-
     u.customize.color_1 = window
       .getComputedStyle(document.querySelector(".color-1"), null)
       .getPropertyValue("background-color");
@@ -190,6 +193,7 @@ function Profile({ user, setUser, theme, setTheme }) {
 
         {/*Container-big */}
         <div className="profile-container-big">
+          {/* Wallpaper-container */}
           <div className="wallpaper-container">
             <p>
               No Image <br />
@@ -204,19 +208,20 @@ function Profile({ user, setUser, theme, setTheme }) {
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fas"
-                data-icon="plus-square"
-                class="svg-inline--fa fa-plus-square fa-w-14"
+                data-icon="exchange-alt"
+                class="svg-inline--fa fa-exchange-alt fa-w-16"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 448 512"
+                viewBox="0 0 512 512"
               >
                 <path
                   fill="currentColor"
-                  d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                  d="M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z"
                 ></path>
               </svg>
             </div>
           </div>
+          {/* Customize-colors */}
           <div className="customize-colors">
             <div className="color-container">
               <div className="color-1"></div>
@@ -235,6 +240,7 @@ function Profile({ user, setUser, theme, setTheme }) {
               />
             </div>
           </div>
+          {/* Buttons */}
           <div className="generate-save">
             <a target="_blank" href="https://aniumbott.github.io/Rangeen/">
               <div>
@@ -251,10 +257,11 @@ function Profile({ user, setUser, theme, setTheme }) {
         </div>
 
         {/* Pop-ups */}
+        {/* Profilepic pop-up */}
         <div className="edit-container" id="profilepic">
           <div className="popup-textbox">
             <input type="text" defaultValue="Paste the source (profilepic)" />
-            <button id="check" onClick={() => set("google-p")}>
+            <button className="check" onClick={() => set("google-p")}>
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -281,15 +288,17 @@ function Profile({ user, setUser, theme, setTheme }) {
                 </g>
               </svg>
             </button>
-            <button id="check" onClick={() => set("profilepic")}>
+            <button className="check" onClick={() => set("profilepic")}>
               &#10003;
             </button>
           </div>
         </div>
+
+        {/* Username pop-up */}
         <div className="edit-container" id="username">
           <div className="popup-textbox">
             <input type="text" defaultValue="Enter new Username" />
-            <button id="check" onClick={() => set("google-u")}>
+            <button className="check" onClick={() => set("google-u")}>
               <svg
                 viewBox="0 0 24 24"
                 width="24"
@@ -316,33 +325,23 @@ function Profile({ user, setUser, theme, setTheme }) {
                 </g>
               </svg>
             </button>
-            <button id="check" onClick={() => set("username")}>
+            <button className="check" onClick={() => set("username")}>
               &#10003;
             </button>
           </div>
         </div>
+
+        {/* Wallpaper pop-up */}
         <div className="edit-container" id="wallpaper">
           <div className="popup-textbox">
             <input type="text" defaultValue="Enter the source (wallpaper)" />
-            <button id="check" onClick={() => set("google-w")}>
-              <svg
-                id="redo-bg"
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="redo"
-                class="svg-inline--fa fa-redo fa-w-16"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M500.33 0h-47.41a12 12 0 0 0-12 12.57l4 82.76A247.42 247.42 0 0 0 256 8C119.34 8 7.9 119.53 8 256.19 8.1 393.07 119.1 504 256 504a247.1 247.1 0 0 0 166.18-63.91 12 12 0 0 0 .48-17.43l-34-34a12 12 0 0 0-16.38-.55A176 176 0 1 1 402.1 157.8l-101.53-4.87a12 12 0 0 0-12.57 12v47.41a12 12 0 0 0 12 12h200.33a12 12 0 0 0 12-12V12a12 12 0 0 0-12-12z"
-                ></path>
-              </svg>
+            <button
+              className="redo-bg-button check"
+              onClick={() => set("google-w")}
+            >
+              <img id="redo-bg" src={logo} alt="" srcset="" />
             </button>
-            <button id="check" onClick={() => set("wallpaper")}>
+            <button className="check" onClick={() => set("wallpaper")}>
               &#10003;
             </button>
           </div>
@@ -631,7 +630,7 @@ const UserStyleComponent = styled.div`
         display: none;
         height: 3rem;
         width: 30rem;
-        box-shadow: 0px 0px 10px 0px #11111177;
+        box-shadow: 0px 0px 20px 0px #11111155;
         background: ${(props) => props.theme.color_2};
         border-radius: 10px;
         margin: 0.5rem auto;
@@ -649,11 +648,10 @@ const UserStyleComponent = styled.div`
           background: transparent;
         }
         #redo-bg {
-          path {
-            fill: ${(props) => props.theme.color_1};
-          }
+          height: 100%;
+          object-fit: cover;
         }
-        #check {
+        .check {
           cursor: pointer;
           width: 10%;
           height: 100%;
@@ -668,6 +666,9 @@ const UserStyleComponent = styled.div`
             width: 100%;
             background: whitesmoke;
           }
+        }
+        .redo-bg-button {
+          background: transparent;
         }
       }
     }

@@ -1,5 +1,5 @@
 // Additionals
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { auth } from "./firebase";
 import { ThemeProvider } from "styled-components";
@@ -16,7 +16,6 @@ import bg from "./images/4.jpg";
 
 // Main function
 function App() {
-  // console.log(auth.currentUser);
   const [user, setUser] = useState({
     username: auth.currentUser.displayName,
     profilepic: auth.currentUser.photoURL,
@@ -29,21 +28,15 @@ function App() {
     id: auth.currentUser.uid,
   });
 
-  const [theme, setTheme] = useState({
+  // Universal theme
+  let theme = {
     color_1: user.customize.color_1,
     color_2: user.customize.color_2,
-  });
-
-  useEffect(() => {
-    setTheme({
-      color_1: user.customize.color_1,
-      color_2: user.customize.color_2,
-    });
-  }, [user]);
+  };
 
   return (
     <div className="App">
-      <SetUser setUser={setUser} user={user} setTheme={setTheme} />
+      <SetUser setUser={setUser} user={user} />
       <ThemeProvider theme={theme}>
         <Menu user={user} />
         <div className="main-container">
@@ -51,14 +44,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route
               path="/profile"
-              element={
-                <Profile
-                  user={user}
-                  setUser={setUser}
-                  theme={theme}
-                  setTheme={setTheme}
-                />
-              }
+              element={<Profile user={user} setUser={setUser} />}
             />
             <Route path="/servers" element={<Servers />} />
             <Route path="/reqas" element={<Reqas />} />

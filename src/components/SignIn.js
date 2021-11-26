@@ -1,10 +1,12 @@
+// Additionals
 import React from "react";
 import styled from "styled-components";
-import bg from "../images/5.jpg";
-import logo from "../images/logo.png";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link } from "react-router-dom";
+// Coponents
+import bg from "../images/5.jpg";
+import logo from "../images/logo.png";
 
 // Main function
 function SignIn() {
