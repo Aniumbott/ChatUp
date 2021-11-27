@@ -22,7 +22,7 @@ function App() {
     email: auth.currentUser.email,
     customize: {
       wallpaper: bg,
-      color_1: "#000000",
+      color_1: "#222222",
       color_2: "#fe9c26",
     },
     id: auth.currentUser.uid,
