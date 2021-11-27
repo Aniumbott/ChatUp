@@ -13,7 +13,7 @@ function SignIn() {
   // Sign-In function
   function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider);
+    signInWithPopup(auth, provider).catch(() => {});
   }
 
   return (
