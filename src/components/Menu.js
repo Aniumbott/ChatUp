@@ -35,13 +35,13 @@ function Menu({ user }) {
     <MenuItems className="none">
       <main className="">
         {/* DETAILS */}
-        <Details onClick={Toggle}>
+        <Details title="Toggle Expand" onClick={Toggle}>
           <img src={logo} alt="" srcset="" />
         </Details>
 
         <div className="items">
           {/* HOME */}
-          <Link to="/" className="itemContainer" id="home">
+          <Link title="Home" to="/" className="itemContainer" id="home">
             <Sdivs>
               <svg
                 fill="#000000"
@@ -57,7 +57,12 @@ function Menu({ user }) {
           </Link>
 
           {/* POFILE */}
-          <Link to="/profile" className="itemContainer" id="profile">
+          <Link
+            title="Profile"
+            to="/profile"
+            className="itemContainer"
+            id="profile"
+          >
             <Sdivs>
               <svg
                 width="60"
@@ -76,7 +81,12 @@ function Menu({ user }) {
           </Link>
 
           {/* SERVERS */}
-          <Link to="/servers" className="itemContainer" id="servers">
+          <Link
+            title="Servers"
+            to="/servers"
+            className="itemContainer"
+            id="servers"
+          >
             <Sdivs>
               <svg
                 width="48"
@@ -95,7 +105,12 @@ function Menu({ user }) {
           </Link>
 
           {/* REQAS */}
-          <Link to="/reqas" className="itemContainer" id="reqas">
+          <Link
+            title="Requesst a server"
+            to="/reqas"
+            className="itemContainer"
+            id="reqas"
+          >
             <Sdivs>
               <svg
                 width="60"
@@ -114,7 +129,7 @@ function Menu({ user }) {
           </Link>
 
           {/* INFO */}
-          <Link to="/info" className="itemContainer" id="info">
+          <Link title="Info" to="/info" className="itemContainer" id="info">
             <Sdivs>
               <svg
                 width="387"
@@ -133,7 +148,12 @@ function Menu({ user }) {
           </Link>
 
           {/* FEEDBACK */}
-          <Link to="/feedback" className="itemContainer" id="feedback">
+          <Link
+            title="Feedback"
+            to="/feedback"
+            className="itemContainer"
+            id="feedback"
+          >
             <Sdivs>
               <svg
                 width="60"
