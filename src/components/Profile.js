@@ -66,26 +66,52 @@ function Profile({ user, setUser }) {
     let username;
     let profilepic;
     let wallpaper;
-    if (q == "username") {
-      username = document.querySelector("#username input").value;
-      document.querySelector(".username p").innerText = username;
-    } else if (q == "profilepic") {
-      profilepic = document.querySelector("#profilepic input").value;
-      document.querySelector(".profilepic img").src = profilepic;
-    } else if (q == "wallpaper") {
-      wallpaper = document.querySelector("#wallpaper input").value;
-      document.querySelector(".wallpaper-container img").src = wallpaper;
-    } else if (q == "google-u") {
-      username = auth.currentUser.displayName;
-      document.querySelector(".username p").innerText = username;
-    } else if (q == "google-p") {
-      profilepic = auth.currentUser.photoURL;
-      document.querySelector(".profilepic img").src = profilepic;
-    }
-    if (username == "" || profilepic == "" || wallpaper == "") {
-      alert("Value cannot be empty.");
-    } else {
-      change(q);
+    let username_component = document.querySelector(".username p");
+    let profilepic_component = document.querySelector(".profilepic img");
+    let wallpaper_component = document.querySelector(
+      ".wallpaper-container img"
+    );
+
+    switch (q) {
+      case "username":
+        username = document.querySelector("#username input").value;
+        if (username != "") {
+          username_component.innerText = username;
+          change(q);
+        } else {
+          alert("Vaue cannot be empty.");
+        }
+        break;
+
+      case "profilepic":
+        profilepic = document.querySelector("#profilepic input").value;
+        if (profilepic != "") {
+          profilepic_component.src = profilepic;
+          change(q);
+        } else {
+          alert("Vaue cannot be empty.");
+        }
+        break;
+
+      case "wallpaper":
+        wallpaper = document.querySelector("#wallpaper input").value;
+        if (wallpaper != "") {
+          wallpaper_component.src = wallpaper;
+          change(q);
+        } else {
+          alert("Vaue cannot be empty.");
+        }
+        break;
+      case "google-u":
+        username = auth.currentUser.displayName;
+        username_component.innerText = username;
+        change(q);
+        break;
+      case "google-p":
+        profilepic = auth.currentUser.photoURL;
+        profilepic_component.src = profilepic;
+        change(q);
+        break;
     }
   }
 
