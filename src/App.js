@@ -13,6 +13,7 @@ import Info from "./components/Info";
 import Feedback from "./components/Feedback";
 import SetUser from "./components/SetUser";
 import bg from "./images/4.jpg";
+import Chatapp from "./components/Chatapp";
 
 // Main function
 function App() {
@@ -46,10 +47,36 @@ function App() {
               path="/profile"
               element={<Profile user={user} setUser={setUser} />}
             />
-            <Route path="/servers" element={<Servers />} />
+            <Route path="/servers" element={<Servers user={user} />} />
             <Route path="/reqas" element={<Reqas />} />
             <Route path="/info" element={<Info />} />
             <Route path="/feedback" element={<Feedback />} />
+
+            {/* Servers */}
+            <Route
+              path="/server/business"
+              element={<Chatapp user={user} server="business" />}
+            />
+            <Route
+              path="/server/entertainment"
+              element={<Chatapp user={user} server="entertainment" />}
+            />
+            <Route
+              path="/server/health"
+              element={<Chatapp user={user} server="health" />}
+            />
+            <Route
+              path="/server/politics"
+              element={<Chatapp user={user} server="politics" />}
+            />
+            <Route
+              path="/server/sports"
+              element={<Chatapp user={user} server="sports" />}
+            />
+            <Route
+              path="/server/technology"
+              element={<Chatapp user={user} server="technology" />}
+            />
           </Routes>
         </div>
       </ThemeProvider>

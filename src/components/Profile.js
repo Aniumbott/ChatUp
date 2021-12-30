@@ -413,9 +413,7 @@ const UserStyleComponent = styled.div`
   main {
     width: 70%;
     #user-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
+      object-fit: cover;
       width: 100%;
     }
     display: flex;

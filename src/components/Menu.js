@@ -23,12 +23,13 @@ function Menu({ user }) {
     let path = location.pathname;
     if (location.pathname == "/") path = "/home";
     path = "#" + path.substring(1);
-
-    // Set active route
-    document.querySelectorAll(".items a").forEach((a) => {
-      a.style.background = user.customize.color_1;
-    });
-    document.querySelector(path).style.background = user.customize.color_2;
+    if (path.split("/").length == 1) {
+      // Set active route
+      document.querySelectorAll(".items a").forEach((a) => {
+        a.style.background = user.customize.color_1;
+      });
+      document.querySelector(path).style.background = user.customize.color_2;
+    }
   }, [location.pathname, user]);
 
   return (
