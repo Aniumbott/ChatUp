@@ -18,13 +18,15 @@ const servers = [
   ["Technology", technology],
 ];
 
-function Servers({ user }) {
+function Servers({ user, url }) {
   return (
     <ServersStyleComponent>
       <div class="bg">
         <img src={user.customize.wallpaper} alt="" srcset="" />
         <div className="bg-ovrerlay"></div>
       </div>
+
+      {/* SERVERS */}
       <h1>SERVERS</h1>
       <div className="servers">
         <Link title="Business" to="/servers/business">
@@ -85,6 +87,7 @@ const ServersStyleComponent = styled.div`
   height: 100vh;
   width: 100%;
   overflow: hidden;
+  position: relative;
   .bg {
     position: absolute;
     top: 0;
@@ -108,14 +111,14 @@ const ServersStyleComponent = styled.div`
   }
   h1 {
     position: absolute;
-    top: -2%;
+    top: 0%;
     left: 50%;
     transform: translateX(-50%);
     z-index: 2;
     color: ${(props) => props.theme.color_2};
     font-size: 2rem;
-    padding: 1rem 2rem;
-    border-radius: 20px;
+    padding: 0.6rem 2rem;
+    border-radius: 0 0 20px 20px;
     font-weight: 700;
     background: ${(props) => props.theme.color_1};
   }
@@ -137,6 +140,7 @@ const Server = styled.div`
   border: 5px solid ${(props) => props.theme.color_2};
   overflow: hidden;
   z-index: 3;
+  transition: all 0.2s ease;
   img {
     width: 100%;
     object-fit: cover;
@@ -168,7 +172,10 @@ const Server = styled.div`
   }
   &:hover {
     border: none;
-    box-shadow: -6px 6px 0px 6px ${(props) => props.theme.color_2};
+    /* border-top: 2px solid ${(props) => props.theme.color_2};
+    border-right: 2px solid ${(props) => props.theme.color_2}; */
+
+    box-shadow: 0 0 20px 3px ${(props) => props.theme.color_2};
   }
 `;
 export default Servers;

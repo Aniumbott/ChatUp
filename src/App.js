@@ -41,6 +41,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Menu user={user} />
         <div className="main-container">
+          {/* <RoutesRender /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
@@ -48,35 +49,36 @@ function App() {
               element={<Profile user={user} setUser={setUser} />}
             />
             <Route path="/servers" element={<Servers user={user} />} />
-            <Route path="/reqas" element={<Reqas />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="/feedback" element={<Feedback />} />
 
             {/* Servers */}
             <Route
-              path="/server/business"
-              element={<Chatapp user={user} server="business" />}
+              path="servers/business"
+              element={<Chatapp user={user} server="Business" />}
             />
             <Route
-              path="/server/entertainment"
-              element={<Chatapp user={user} server="entertainment" />}
+              path="servers/entertainment"
+              element={<Chatapp user={user} server="Entertainment" />}
             />
             <Route
-              path="/server/health"
-              element={<Chatapp user={user} server="health" />}
+              path="servers/health"
+              element={<Chatapp user={user} server="Health" />}
             />
             <Route
-              path="/server/politics"
-              element={<Chatapp user={user} server="politics" />}
+              path="servers/politics"
+              element={<Chatapp user={user} server="Politics" />}
             />
             <Route
-              path="/server/sports"
-              element={<Chatapp user={user} server="sports" />}
+              path="servers/sports"
+              element={<Chatapp user={user} server="Sports" />}
             />
             <Route
-              path="/server/technology"
-              element={<Chatapp user={user} server="technology" />}
+              path="servers/technology"
+              element={<Chatapp user={user} server="Technology" />}
             />
+
+            <Route path="/reqas" element={<Reqas />} />
+            <Route path="/info" element={<Info />} />
+            <Route path="/feedback" element={<Feedback />} />
           </Routes>
         </div>
       </ThemeProvider>
