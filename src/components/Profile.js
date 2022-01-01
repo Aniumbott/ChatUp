@@ -145,17 +145,17 @@ function Profile({ user, setUser }) {
       ".wallpaper-container img"
     ).src;
 
-    u.customize.color_1 = window
+    const p_color_1 = window
       .getComputedStyle(document.querySelector(".color-1"), null)
       .getPropertyValue("background-color");
 
-    u.customize.color_2 = window
+    const p_color_2 = window
       .getComputedStyle(document.querySelector(".color-2"), null)
       .getPropertyValue("background-color");
 
-    if (avoidWhite(u.customize.color_1) && avoidWhite(u.customize.color_2)) {
-      u.customize.color_1 = rgbToHex(u.customize.color_1);
-      u.customize.color_2 = rgbToHex(u.customize.color_2);
+    if (avoidWhite(p_color_1) && avoidWhite(p_color_2)) {
+      u.customize.color_1 = rgbToHex(p_color_1);
+      u.customize.color_2 = rgbToHex(p_color_2);
 
       const updateUser = async (u) => {
         const update = await setDoc(doc(db, "Users", u.id), u);

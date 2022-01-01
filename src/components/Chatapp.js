@@ -1,13 +1,168 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { db } from "../firebase";
+import { serverTimestamp, query, orderBy } from "firebase/firestore";
+import { addDoc, onSnapshot, collection } from "@firebase/firestore";
 
-function newsToggle() {
-  let e = document.querySelector(".news");
-  e.classList.toggle("expand");
-}
-
+// Main function
 function Chatapp({ user, server }) {
+  // From db
+  const db_server_messages = collection(db, "Servers", server, "messages");
+
+  // Data from database
+  useEffect(() => {
+    onSnapshot(query(db_server_messages, orderBy("createdAt")), (snapshot) => {
+      setMessages(snapshot.docs.map((doc) => doc.data()));
+      scroll.current.scrollIntoView({ behavior: "smooth" });
+    });
+  }, []);
+
+  // Messages state
+  const [messages, setMessages] = useState([]);
+  // Info message state
+  const [infoMessage, setInfoMessage] = useState([
+    {
+      createdAt: "",
+      text: "",
+      profilepic: "",
+      status: "",
+      email: "",
+      username: "",
+    },
+  ]);
+
+  // Scroll Effect
+  const scroll = useRef();
+
+  // ----------------------------------------------------------------------------------------------------------------------------------------------
+
+  // Interactions
+  //News Toggle
+  function newsToggle() {
+    let e = document.querySelector(".news");
+    e.classList.toggle("expand");
+  }
+  // Show Info
+  function showInfo(
+    m_createdAt,
+    m_data,
+    m_profilepic,
+    m_status,
+    m_email,
+    m_username
+  ) {
+    document.querySelector(".message-info-container").style.opacity = 1;
+    document.querySelector(".message-info-container").style.zIndex = 7;
+    setInfoMessage({
+      createdAt: m_createdAt.toDate().toString(),
+      text: m_data.text,
+      profilepic: m_profilepic,
+      status: m_status,
+      email: m_email,
+      username: m_username,
+    });
+  }
+  // Close Info
+  function closeInfo() {
+    document.querySelector(".message-info-container").style.opacity = 0;
+    document.querySelector(".message-info-container").style.zIndex = -7;
+  }
+  // Send Message
+  async function sendMessage() {
+    const text_data = document.querySelector(".textarea").innerText.trim();
+    if (text_data.length === 0) {
+      alert("Message cannot be Empty.");
+      document.querySelector(".textarea").focus();
+    } else {
+      const update_db = await addDoc(db_server_messages, {
+        data: {
+          text: text_data,
+        },
+        email: user.email,
+        profilepic: user.profilepic,
+        status: "none",
+        username: user.username,
+        createdAt: serverTimestamp(),
+      });
+    }
+  }
+  // Send message using enter key
+  const enter_sendMessage = (e) => {
+    if (e.key == "Enter") {
+      sendMessage();
+    }
+  };
+
+  // Components
+  const EnterMessage = () => {
+    return (
+      <EnterMessageComponent>
+        <span
+          className="textarea"
+          role="textbox"
+          contentEditable
+          onKeyPress={(e) => {
+            enter_sendMessage(e);
+          }}
+        ></span>
+        <button title="Send Message" onClick={sendMessage}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path d="M24 0l-6 22-8.129-7.239 7.802-8.234-10.458 7.227-7.215-1.754 24-12zm-15 16.668v7.332l3.258-4.431-3.258-2.901z" />
+          </svg>
+        </button>
+      </EnterMessageComponent>
+    );
+  };
+  //Message Info
+  const MessageInfo = () => {
+    return (
+      <MessageInfoComponent>
+        <div className="title">
+          <p>Message Details</p>
+          <div
+            title="Close Pop-Up"
+            className="close-details"
+            onClick={closeInfo}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z" />
+            </svg>
+          </div>
+        </div>
+        <div className="details">
+          <div className="details-profilepic">
+            <img src={infoMessage.profilepic} alt="" srcset="" />
+          </div>
+          <div className="details-data">
+            <p>
+              <span>Username :</span> {infoMessage.username}
+            </p>
+            <p>
+              <span>Timestamp :</span> {infoMessage.createdAt}
+            </p>
+          </div>
+        </div>
+        <div className="content">
+          <h2>Content</h2>
+          <p>{infoMessage.text}</p>
+        </div>
+      </MessageInfoComponent>
+    );
+  };
+
+  // ----------------------------------------------------------------------------------------------------------------------------------------------
+
   return (
     <ChatappStyledComponent>
       <h1>{server.toUpperCase()}</h1>
@@ -27,7 +182,7 @@ function Chatapp({ user, server }) {
         </div>
       </Link>
       <div className="news">
-        <div className="lable" onClick={newsToggle}>
+        <div title="News" className="lable" onClick={newsToggle}>
           <p>N</p>
           <p>E</p>
           <p>W</p>
@@ -35,10 +190,69 @@ function Chatapp({ user, server }) {
         </div>
         <div className="news-data"></div>
       </div>
+      <div className="messages">
+        {messages.map(
+          ({ createdAt, data, profilepic, status, email, username, index }) => (
+            <Message>
+              <div
+                key={index}
+                className={`msg ${email === user.email ? "sent" : "received"} ${
+                  status === "deleted" ? "deleted" : ""
+                }`}
+              >
+                <div className="profilepic">
+                  <img src={profilepic} alt="" />
+                  <div
+                    className="profilepic-overlay"
+                    onClick={() => {
+                      showInfo(
+                        createdAt,
+                        data,
+                        profilepic,
+                        status,
+                        email,
+                        username
+                      );
+                    }}
+                  >
+                    <svg
+                      width="387"
+                      height="387"
+                      viewBox="0 0 387 387"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M193.5 0C86.6404 0 0 86.6716 0 193.5C0 300.391 86.6404 387 193.5 387C300.36 387 387 300.391 387 193.5C387 86.6716 300.36 0 193.5 0ZM193.5 85.8266C211.598 85.8266 226.27 100.498 226.27 118.597C226.27 136.695 211.598 151.367 193.5 151.367C175.402 151.367 160.73 136.695 160.73 118.597C160.73 100.498 175.402 85.8266 193.5 85.8266ZM237.194 284.008C237.194 289.179 233.001 293.371 227.831 293.371H159.169C153.999 293.371 149.806 289.179 149.806 284.008V265.282C149.806 260.112 153.999 255.919 159.169 255.919H168.532V205.984H159.169C153.999 205.984 149.806 201.792 149.806 196.621V177.895C149.806 172.724 153.999 168.532 159.169 168.532H209.105C214.275 168.532 218.468 172.724 218.468 177.895V255.919H227.831C233.001 255.919 237.194 260.112 237.194 265.282V284.008Z"
+                        fill="#E1E1E1"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div className="text">
+                  <p>
+                    {status === "deleted"
+                      ? "This message was deleted."
+                      : data.text}
+                  </p>
+                </div>
+              </div>
+            </Message>
+          )
+        )}
+        <div ref={scroll}></div>
+      </div>
+      <EnterMessage></EnterMessage>
+      <div className="message-info-container">
+        <MessageInfo></MessageInfo>
+      </div>
     </ChatappStyledComponent>
   );
 }
 
+// ----------------------------------------------------------------------------------------------------------------------------------------------
+
+// Styled Componets
 const ChatappStyledComponent = styled.div`
   height: 100vh;
   width: 100%;
@@ -134,6 +348,237 @@ const ChatappStyledComponent = styled.div`
   }
   .expand {
     right: 0;
+  }
+  .messages {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    padding: 0 1rem;
+    margin: 4.5rem auto 6rem;
+    height: calc(100% - 10.5rem);
+    max-height: calc(100% - 10.5rem);
+    overflow-y: scroll;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .message-info-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: #22222299;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+    opacity: 0;
+    z-index: -7;
+  }
+`;
+
+const EnterMessageComponent = styled.div`
+  position: absolute;
+  bottom: 0;
+  height: 3rem;
+  width: 100%;
+  margin: 2rem auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  .textarea {
+    display: block;
+    width: 70%;
+    overflow: scroll;
+    min-height: 3rem;
+    max-height: 10rem;
+    line-height: 1.5rem;
+    font-size: 0.9rem;
+    padding: 0rem 1rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    background: ${(props) => props.theme.color_1};
+    color: ${(props) => props.theme.color_2};
+    border-radius: 10px;
+    :focus {
+      outline: none;
+    }
+  }
+
+  .textarea[contenteditable]:empty::before {
+    content: "Type Here...";
+    border: none;
+    color: #ffffff55;
+  }
+
+  button {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50px;
+    background: ${(props) => props.theme.color_2};
+    padding: 0.5rem;
+    border: none;
+    margin: 0 1rem;
+    cursor: pointer;
+    svg {
+      height: 100%;
+      path {
+        fill: #ffffff;
+      }
+    }
+  }
+`;
+
+const Message = styled.div`
+  padding: 0.5rem;
+  padding-bottom: 0;
+  width: 100%;
+  div {
+    width: fit-content;
+    max-width: 40rem;
+    display: flex;
+    align-items: flex-start;
+    .profilepic {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 50px;
+      margin: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      img {
+        border-radius: 50px;
+        height: 3rem;
+      }
+      .profilepic-overlay {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 50px;
+
+        padding: 0.8rem;
+        background: #22222299;
+        transition: all 0.2s ease;
+        opacity: 0;
+        svg {
+          height: 100%;
+          fill: #ffffff;
+        }
+        :hover {
+          opacity: 1;
+        }
+      }
+    }
+    .text {
+      margin: 0rem 1rem;
+      margin-left: 0.5rem;
+      height: fit-content;
+      min-height: 4rem;
+      padding: 0.5rem 0rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 0.9rem;
+      line-height: 1.5em;
+      width: fit-content;
+    }
+  }
+  .sent {
+    background: ${(props) => props.theme.color_2};
+    color: ${(props) => props.theme.color_1};
+    border-radius: 15px 15px 0px 15px;
+    float: right;
+    .profilepic {
+      img {
+        border: 3px solid ${(props) => props.theme.color_1};
+      }
+    }
+  }
+  .received {
+    background: ${(props) => props.theme.color_1};
+    color: ${(props) => props.theme.color_2};
+    border-radius: 0 15px 15px 15px;
+    float: left;
+    .profilepic {
+      img {
+        border: 2px solid ${(props) => props.theme.color_2};
+      }
+    }
+  }
+  .deleted {
+    .text {
+      opacity: 0.6;
+    }
+  }
+`;
+
+const MessageInfoComponent = styled.div`
+  height: 30rem;
+  width: 40rem;
+  background: ${(props) => props.theme.color_1};
+  color: ${(props) => props.theme.color_2};
+  border-radius: 15px;
+  overflow: hidden;
+  .title {
+    height: 3rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    background: ${(props) => props.theme.color_2};
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    .close-details {
+      height: 2rem;
+      width: 2rem;
+      cursor: pointer;
+      svg {
+        height: 60%;
+        object-fit: cover;
+        fill: #ffffff;
+      }
+    }
+  }
+  .details {
+    height: 10rem;
+    padding: 1rem;
+    display: flex;
+    .details-profilepic {
+      height: 100%;
+      width: 8rem;
+      background: ${(props) => props.theme.color_2};
+      border: 3px solid ${(props) => props.theme.color_2};
+      img {
+        pointer-events: none;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .details-data {
+      height: 100%;
+      margin-left: 2rem;
+      span {
+        font-weight: 700;
+        color: #ffffff;
+      }
+    }
+  }
+  .content {
+    height: 20rem;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: scroll;
+    h2 {
+      color: #ffffff;
+    }
   }
 `;
 export default Chatapp;
