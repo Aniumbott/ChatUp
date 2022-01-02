@@ -2,19 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
-import { serverTimestamp, query, orderBy } from "firebase/firestore";
-import { addDoc, onSnapshot, collection } from "@firebase/firestore";
+import { serverTimestamp, query, orderBy, updateDoc } from "firebase/firestore";
+import { doc, addDoc, onSnapshot, collection } from "@firebase/firestore";
+import Servers from "./Servers";
 
 // Main function
 function Chatapp({ user, server }) {
   // From db
   const db_server_messages = collection(db, "Servers", server, "messages");
 
-  // Data from database
+  // Live Updating Data from database
   useEffect(() => {
     onSnapshot(query(db_server_messages, orderBy("createdAt")), (snapshot) => {
-      setMessages(snapshot.docs.map((doc) => doc.data()));
-      scroll.current.scrollIntoView({ behavior: "smooth" });
+      const db_messages = snapshot.docs.map((doc) => {
+        let data = doc.data();
+        data.id = doc.id;
+        return data;
+      });
+      setMessages(db_messages);
     });
   }, []);
 
@@ -29,11 +34,15 @@ function Chatapp({ user, server }) {
       status: "",
       email: "",
       username: "",
+      id: "",
     },
   ]);
 
   // Scroll Effect
   const scroll = useRef();
+  useEffect(() => {
+    scroll.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // ----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,17 +59,23 @@ function Chatapp({ user, server }) {
     m_profilepic,
     m_status,
     m_email,
-    m_username
+    m_username,
+    m_id
   ) {
     document.querySelector(".message-info-container").style.opacity = 1;
     document.querySelector(".message-info-container").style.zIndex = 7;
     setInfoMessage({
       createdAt: m_createdAt.toDate().toString(),
-      text: m_data.text,
+      text: `${
+        m_status === "deleted"
+          ? "[This message was deleted by the User.]"
+          : m_data.text
+      }`,
       profilepic: m_profilepic,
       status: m_status,
       email: m_email,
       username: m_username,
+      id: m_id,
     });
   }
   // Close Info
@@ -93,8 +108,16 @@ function Chatapp({ user, server }) {
       sendMessage();
     }
   };
+  // Delete Message
+  async function deleteMessage() {
+    closeInfo();
+    const deleting = await updateDoc(doc(db_server_messages, infoMessage.id), {
+      status: "deleted",
+    });
+  }
 
   // Components
+  // Input Box and Send button
   const EnterMessage = () => {
     return (
       <EnterMessageComponent>
@@ -156,6 +179,24 @@ function Chatapp({ user, server }) {
         <div className="content">
           <h2>Content</h2>
           <p>{infoMessage.text}</p>
+          {infoMessage.email == user.email ? (
+            <div
+              title="Delete Message"
+              className="delete-message"
+              onClick={deleteMessage}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z" />
+              </svg>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </MessageInfoComponent>
     );
@@ -192,10 +233,10 @@ function Chatapp({ user, server }) {
       </div>
       <div className="messages">
         {messages.map(
-          ({ createdAt, data, profilepic, status, email, username, index }) => (
+          ({ createdAt, data, profilepic, status, email, username, id }) => (
             <Message>
               <div
-                key={index}
+                id={id}
                 className={`msg ${email === user.email ? "sent" : "received"} ${
                   status === "deleted" ? "deleted" : ""
                 }`}
@@ -211,7 +252,8 @@ function Chatapp({ user, server }) {
                         profilepic,
                         status,
                         email,
-                        username
+                        username,
+                        id
                       );
                     }}
                   >
@@ -527,6 +569,8 @@ const MessageInfoComponent = styled.div`
   color: ${(props) => props.theme.color_2};
   border-radius: 15px;
   overflow: hidden;
+  position: relative;
+
   .title {
     height: 3rem;
     width: 100%;
@@ -578,6 +622,25 @@ const MessageInfoComponent = styled.div`
     overflow-y: scroll;
     h2 {
       color: #ffffff;
+    }
+    .delete-message {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: 1rem;
+      height: 3rem;
+      width: 3rem;
+      svg {
+        height: 100%;
+        path {
+          fill: ${(props) => props.theme.color_2};
+        }
+      }
+      &:hover {
+        path {
+          fill: #ffffff;
+        }
+      }
     }
   }
 `;

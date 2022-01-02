@@ -9,16 +9,7 @@ import politics from "../images/servers/politics.jpg";
 import sports from "../images/servers/sports.jpg";
 import technology from "../images/servers/technology.jpg";
 
-const servers = [
-  ["Business", business],
-  ["Entertainment", entertainment],
-  ["Health", health],
-  ["Politics", politics],
-  ["Sports", sports],
-  ["Technology", technology],
-];
-
-function Servers({ user, url }) {
+function Servers({ user }) {
   return (
     <ServersStyleComponent>
       <div class="bg">
