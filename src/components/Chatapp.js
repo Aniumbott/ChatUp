@@ -3,13 +3,32 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { db } from "../firebase";
 import { serverTimestamp, query, orderBy, updateDoc } from "firebase/firestore";
-import { doc, addDoc, onSnapshot, collection } from "@firebase/firestore";
-import Servers from "./Servers";
+import {
+  doc,
+  addDoc,
+  onSnapshot,
+  collection,
+  getDoc,
+} from "@firebase/firestore";
+
+// Extras
+const now = new Date();
+const today = new Date(
+  `${now.getMonth() + 1}-${now.getDate()}-${now.getFullYear()}`
+);
+function isOkToUpdate(db_date) {
+  if (today > db_date) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 // Main function
 function Chatapp({ user, server }) {
   // From db
   const db_server_messages = collection(db, "Servers", server, "messages");
+  const db_server_news = doc(db, "Servers", server);
 
   // Live Updating Data from database
   useEffect(() => {
@@ -21,6 +40,46 @@ function Chatapp({ user, server }) {
       });
       setMessages(db_messages);
     });
+  }, []);
+
+  // Getting News
+  useEffect(() => {
+    const get_db_news = async () => {
+      const get_news = await getDoc(db_server_news);
+      const db_date = new Date(get_news.data().news.date);
+      if (isOkToUpdate(db_date)) {
+        fetch(
+          `https://newsapi.org/v2/everything?q=${server.toLowerCase()}&apiKey=${
+            process.env.REACT_APP_newsApiKey
+          }`
+        )
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw response;
+            }
+          })
+          .then(async (data) => {
+            const update_db_news = await updateDoc(db_server_news, {
+              news: {
+                date: `${
+                  today.getMonth() + 1
+                }/${today.getDate()}/${today.getFullYear()}`,
+                data: data,
+              },
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        console.log("its already there");
+      }
+      const news_data = get_news.data().news.data.articles;
+      setNews(news_data);
+    };
+    get_db_news();
   }, []);
 
   // Messages state
@@ -37,6 +96,8 @@ function Chatapp({ user, server }) {
       id: "",
     },
   ]);
+  // News
+  const [news, setNews] = useState([[]]);
 
   // Scroll Effect
   const scroll = useRef();
@@ -229,7 +290,14 @@ function Chatapp({ user, server }) {
           <p>W</p>
           <p>S</p>
         </div>
-        <div className="news-data"></div>
+        <div className="news-data">
+          <h2>Todays' Latest</h2>
+          {news.map(({ author, content, description, source }) => (
+            <OneNews title="Details">
+              <p>{content}</p>
+            </OneNews>
+          ))}
+        </div>
       </div>
       <div className="messages">
         {messages.map(
@@ -385,7 +453,19 @@ const ChatappStyledComponent = styled.div`
     .news-data {
       height: 100%;
       width: 100%;
+      padding-left: 2rem;
+      padding-right: 1rem;
       background: ${(props) => props.theme.color_1};
+      overflow-y: scroll;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      h2 {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+        color: #ffffff;
+      }
     }
   }
   .expand {
@@ -488,6 +568,8 @@ const Message = styled.div`
     .profilepic {
       height: 3rem;
       width: 3rem;
+      min-height: 3rem;
+      min-width: 3rem;
       border-radius: 50px;
       margin: 0.5rem;
       align-items: center;
@@ -539,6 +621,7 @@ const Message = styled.div`
     border-radius: 15px 15px 0px 15px;
     float: right;
     .profilepic {
+      background: ${(props) => props.theme.color_1};
       img {
         border: 3px solid ${(props) => props.theme.color_1};
       }
@@ -550,6 +633,7 @@ const Message = styled.div`
     border-radius: 0 15px 15px 15px;
     float: left;
     .profilepic {
+      background: ${(props) => props.theme.color_2};
       img {
         border: 2px solid ${(props) => props.theme.color_2};
       }
@@ -592,11 +676,12 @@ const MessageInfoComponent = styled.div`
     }
   }
   .details {
-    height: 10rem;
+    max-height: 10rem;
     padding: 1rem;
     display: flex;
+    justify-content: space-between;
     .details-profilepic {
-      height: 100%;
+      height: 8rem;
       width: 8rem;
       background: ${(props) => props.theme.color_2};
       border: 3px solid ${(props) => props.theme.color_2};
@@ -608,6 +693,7 @@ const MessageInfoComponent = styled.div`
     }
     .details-data {
       height: 100%;
+      width: 75%;
       margin-left: 2rem;
       span {
         font-weight: 700;
@@ -642,6 +728,23 @@ const MessageInfoComponent = styled.div`
         }
       }
     }
+  }
+`;
+
+const OneNews = styled.div`
+  min-height: 9rem;
+  max-width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  color: ${(props) => props.theme.color_2};
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  ::-webkit-scrollbar {
+    width: 0rem;
+  }
+  :hover {
+    color: #ffffff;
   }
 `;
 export default Chatapp;

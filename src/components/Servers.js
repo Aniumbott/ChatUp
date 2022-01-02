@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { db } from "../firebase";
 import business from "../images/servers/business.jpg";
 import entertainment from "../images/servers/entertainment.jpg";
 import health from "../images/servers/health.jpg";
